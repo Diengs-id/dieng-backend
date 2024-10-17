@@ -9,18 +9,26 @@ export const findUserByEmail = async (email: string) => {
   });
 };
 
-export const sendOTP = async (data: VerificationCode) => {
+export const findVerificationCodeByEmail = async (email: string) => {
+  return await prisma.verificationCode.findFirst({
+    where: {
+      email,
+    },
+  });
+};
+
+export const sendOTP = async (data: Pick<VerificationCode, "email" | "expired_at" | "otp">) => {
   return await prisma.verificationCode.create({
     data: {
       email: data.email,
       otp: data.otp,
       expired_at: data.expired_at,
-      is_email_verified: data.is_email_verified,
+      is_email_verified: false,
     },
   });
 };
 
-export const updateOTP = async (data: VerificationCode) => {
+export const updateOTP = async (data: Pick<VerificationCode, "email" | "expired_at" | "otp">) => {
   return await prisma.verificationCode.update({
     where: {
       email: data.email,
@@ -28,7 +36,7 @@ export const updateOTP = async (data: VerificationCode) => {
     data: {
       otp: data.otp,
       expired_at: data.expired_at,
-      is_email_verified: data.is_email_verified,
+      is_email_verified: false,
     },
   });
 };

@@ -16,3 +16,13 @@ export async function emailValidate(req: Request, res: Response, next: NextFunct
     res.status(400).json(error);
   }
 }
+
+export async function sendOTP(req: Request, res: Response) {
+  try {
+    const email = req.body.email;
+    const response = await userServices.sendOTP(email);
+    res.json(response);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
