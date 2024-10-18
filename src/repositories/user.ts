@@ -1,5 +1,5 @@
+import { RegisterDTO } from "../dto/user-dto";
 import { prisma } from "../libs/prisma";
-import { VerificationCode } from "@prisma/client";
 
 export const findUserByEmail = async (email: string) => {
   return await prisma.user.count({
@@ -9,34 +9,16 @@ export const findUserByEmail = async (email: string) => {
   });
 };
 
-export const findVerificationCodeByEmail = async (email: string) => {
-  return await prisma.verificationCode.findFirst({
-    where: {
-      email,
-    },
-  });
-};
-
-export const sendOTP = async (data: Pick<VerificationCode, "email" | "expired_at" | "otp">) => {
-  return await prisma.verificationCode.create({
+export const registerUser = async (registerDTO: RegisterDTO) => {
+  return await prisma.user.create({
     data: {
-      email: data.email,
-      otp: data.otp,
-      expired_at: data.expired_at,
-      is_email_verified: false,
-    },
-  });
-};
-
-export const updateOTP = async (data: Pick<VerificationCode, "email" | "expired_at" | "otp">) => {
-  return await prisma.verificationCode.update({
-    where: {
-      email: data.email,
-    },
-    data: {
-      otp: data.otp,
-      expired_at: data.expired_at,
-      is_email_verified: false,
+      email: registerDTO.email,
+      password: registerDTO.password,
+      customer: {
+        create: {
+          customer_name: registerDTO.name,
+        },
+      },
     },
   });
 };

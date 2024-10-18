@@ -26,3 +26,27 @@ export async function sendOTP(req: Request, res: Response) {
     res.status(500).json(error);
   }
 }
+
+export async function verifOTP(req: Request, res: Response) {
+  try {
+    const email = req.body.email;
+    const otp = req.body.otp;
+    const response = await userServices.emailVerifOTP({ email, otp });
+    res.json(response);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
+export async function register(req: Request, res: Response) {
+  try {
+    const email = req.body.email;
+    const name = req.body.name;
+    const password = req.body.password;
+
+    const createUser = await userServices.register({ email, name, password });
+    res.json(createUser);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
