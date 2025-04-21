@@ -4,7 +4,7 @@ import usersRouter from "./router/users";
 const router = Router();
 
 router.get("/", (req, res) => {
-  res.send("ROOT ROUTER DIENGS EXPRESS APP");
+  res.send("WELCOME TO ROOT ROUTER DIENGS EXPRESS APP");
 });
 
 router.use("/users", usersRouter);
